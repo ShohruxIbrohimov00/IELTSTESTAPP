@@ -116,8 +116,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
+ALLOWED_HOSTS = ['ieltstestapp.onrender.com', 'localhost', '127.0.0.1']
+LANGUAGE_CODE = 'uz-UZ'
 
 TIME_ZONE = 'UTC'
 
