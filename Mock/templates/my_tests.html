@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Mening testlarim{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto ">
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Mening testlarim</h2>
+
+        {% if my_exams %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for exam in my_exams %}
+                    <div class="bg-gray-100 p-4 rounded-lg shadow-sm border border-gray-200">
+                        <h3 class="text-xl font-semibold text-gray-800">{{ exam.title }}</h3>
+                        <p class="text-gray-600">Davomiyligi: {{ exam.duration_minutes }} daqiqa</p>
+                        <p class="text-gray-600">Yaratilgan: {{ exam.created_at|date:"d-M-Y" }}</p>
+                        <div class="mt-4 flex justify-end space-x-2">
+                            <a href="{% url 'edit_exam' exam_id=exam.id %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-300">
+                                Tahrirlash
+                            </a>
+                            <a href="{% url 'delete_exam' exam_id=exam.id %}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md transition duration-300">
+                                O'chirish
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-gray-500 text-lg mt-10">Sizda hali testlar mavjud emas. Yangi test yaratish uchun quyidagi tugmani bosing.</p>
+        {% endif %}
+
+        <div class="flex justify-center mt-8">
+            <a href="{% url 'create_exam' %}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-md transition duration-300 shadow-lg">
+                Yangi test yaratish
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

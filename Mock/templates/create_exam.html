@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Test yaratish{% endblock %}
+
+{% block content %}
+<body class="bg-gray-100 font-sans">
+    <div class="max-w-7xl mx-auto ">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Yangi test yaratish</h2>
+            <form action="{% url 'create_exam' %}" method="POST">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="title" class="block text-gray-700 font-bold mb-2">Test nomi</label>
+                    <input type="text" id="title" name="title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring focus:border-blue-300" placeholder="Reading Test #1" required>
+                </div>
+                <div class="mb-6">
+                    <label for="duration_minutes" class="block text-gray-700 font-bold mb-2">Imtihon vaqti (daqiqa)</label>
+                    <input type="number" id="duration_minutes" name="duration_minutes" value="60" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring focus:border-blue-300" required>
+                </div>
+
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Savollarni tanlash</h3>
+                <div class="max-h-96 overflow-y-auto border rounded-md p-4">
+                    {% for question in all_questions %}
+                    <label class="flex items-start p-3 bg-gray-50 hover:bg-gray-100 rounded-md cursor-pointer mb-2">
+                        <input type="checkbox" name="questions" value="{{ question.id }}" class="form-checkbox h-5 w-5 text-blue-600 mt-1">
+                        <span class="ml-4 text-gray-800">
+                            <strong>{{ question.question_type|capfirst }}:</strong> {{ question.text|truncatechars:100 }}
+                        </span>
+                    </label>
+                    {% empty %}
+                    <p class="text-gray-500 text-center">Hali savollar mavjud emas. Avval savol qo'shing.</p>
+                    {% endfor %}
+                </div>
+
+                <div class="flex justify-end mt-8">
+                    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md transition duration-300">
+                        Testni yaratish
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% for option in question.answeroption_set.all %}
+    <label class="flex items-center p-4 bg-gray-50 border border-gray-200 rounded-md cursor-pointer hover:bg-gray-100 transition duration-200">
+        <input type="radio" 
+               name="selected_option" 
+               value="{{ option.id }}" 
+               class="form-radio h-5 w-5 text-blue-600 transition duration-150 ease-in-out" 
+               {% if option.id == selected_option_id %}checked{% endif %}>
+        <span class="ml-4 text-lg text-gray-800">{{ option.text }}</span>
+    </label>
+{% endfor %}

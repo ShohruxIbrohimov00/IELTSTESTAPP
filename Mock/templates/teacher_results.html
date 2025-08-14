@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}My Test Results{% endblock %}
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow-md max-w-7xl mx-auto">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Mening testlarim natijalari</h2>
+    
+    {% if results %}
+        <div class="space-y-8">
+            {% for exam_data in results %}
+            <div class="bg-gray-50 rounded-lg p-6 border border-gray-200 shadow-sm">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-700">{{ exam_data.title }}</h3>
+                    <span class="text-sm text-gray-500">{{ exam_data.attempts|length }} ta talaba ishlagan</span>
+                </div>
+                
+                {% if exam_data.attempts %}
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Foydalanuvchi</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">To'g'ri javoblar</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Noto'g'ri javoblar</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Ball</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">%</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Ishlangan vaqt</th>
+                                <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Amallar</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            {% for attempt in exam_data.attempts %}
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ attempt.user_username }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-green-500 font-bold">{{ attempt.correct_answers }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-red-500 font-bold">{{ attempt.incorrect_answers }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ attempt.score }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ attempt.percentage|floatformat:0 }}%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ attempt.completed_at|date:"Y-m-d H:i" }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <a href="{% url 'view_result_detail' attempt_id=attempt.attempt_id %}" class="text-blue-600 hover:text-blue-900">Batafsil</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-center text-gray-500">Hali hech kim bu testni ishlamagan.</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+    <p class="text-center text-gray-500 text-lg mt-10">Siz hali hech qanday test yaratmagansiz.</p>
+    {% endif %}
+</div>
+{% endblock %}

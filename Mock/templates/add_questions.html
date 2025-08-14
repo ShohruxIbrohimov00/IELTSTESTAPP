@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}{% if question %}Savolni tahrirlash{% else %}Yangi savol qo'shish{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto p-4 md:p-8">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">
+            {% if question %}Savolni tahrirlash{% else %}Yangi savol qo'shish{% endif %}
+        </h2>
+        
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <!-- Savol matni -->
+            <div class="mb-4">
+                <label for="text" class="block text-gray-700 font-bold mb-2">Savol matni</label>
+                <textarea id="text" name="text" rows="4" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring focus:border-blue-300" required>{% if question %}{{ question.text }}{% endif %}</textarea>
+            </div>
+            
+            <!-- Savol rasmi -->
+            <div class="mb-4">
+                <label for="image" class="block text-gray-700 font-bold mb-2">Savol rasmi</label>
+                {% if question.image %}
+                <img src="{{ question.image.url }}" alt="Question Image" class="w-full h-auto rounded-md shadow-sm mb-2">
+                {% endif %}
+                <input type="file" id="image" name="image" class="w-full text-gray-700">
+                <p class="text-sm text-gray-500 mt-1">Yangi rasm tanlang yoki mavjudini qoldiring.</p>
+            </div>
+
+            <!-- Savol turi -->
+            <div class="mb-6">
+                <label for="question_type" class="block text-gray-700 font-bold mb-2">Savol turi</label>
+                <select id="question_type" name="question_type" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300">
+                    <option value="reading" {% if question.question_type == 'reading' %}selected{% endif %}>Reading</option>
+                    <option value="listening" {% if question.question_type == 'listening' %}selected{% endif %}>Listening</option>
+                    <option value="writing" {% if question.question_type == 'writing' %}selected{% endif %}>Writing</option>
+                    <option value="speaking" {% if question.question_type == 'speaking' %}selected{% endif %}>Speaking</option>
+                </select>
+            </div>
+
+            <!-- Javob variantlari -->
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Javob variantlari</h3>
+            <div id="options-container" class="space-y-4">
+                {% if question %}
+                    {% for option in question.options.all %}
+                    <div class="flex items-center space-x-2">
+                        <input type="text" name="option_text_{{ forloop.counter }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring focus:border-blue-300" placeholder="Variant {{ forloop.counter }}" value="{{ option.text }}" required>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="is_correct" value="{{ forloop.counter }}" class="form-radio h-5 w-5 text-green-600" {% if option.is_correct %}checked{% endif %} required>
+                            <span class="ml-2 text-sm text-gray-700">To'g'ri</span>
+                        </label>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <!-- Agar yangi savol bo'lsa, bo'sh forma -->
+                    {% for i in "1234" %}
+                    <div class="flex items-center space-x-2">
+                        <input type="text" name="option_text_{{ i }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring focus:border-blue-300" placeholder="Variant {{ i }}" required>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="is_correct" value="{{ i }}" class="form-radio h-5 w-5 text-green-600" required>
+                            <span class="ml-2 text-sm text-gray-700">To'g'ri</span>
+                        </label>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="flex justify-end mt-8">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-300">
+                    {% if question %}Savolni saqlash{% else %}Savolni qo'shish{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
