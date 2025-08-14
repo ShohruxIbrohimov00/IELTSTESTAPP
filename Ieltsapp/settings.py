@@ -23,10 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-e0-aau%v!xj1%+$!9o(5#tm05%-d!crg=wl&&q@jcla_5_j-za'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+DEBUG = False 
+ALLOWED_HOSTS = ['ieltstestapp.onrender.com', 'localhost', '127.0.0.1']
 
 # Application definition
 
@@ -81,7 +79,7 @@ TEMPLATES = [
     },
 ]
 
-ALLOWED_HOSTS = ['ieltstestapp.onrender.com', 'localhost', '127.0.0.1']
+
 WSGI_APPLICATION = 'Ieltsapp.wsgi.application'
 
 
